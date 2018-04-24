@@ -1,0 +1,68 @@
+name: corsixth
+version: v0.61
+summary: Open source clone of Theme Hospital
+description: 
+  CorsixTH aims to re-implement the game engine of Theme Hospital, and be 
+  able to load the original game data files. This means that you will need
+  a purchased copy of Theme Hospital, or a copy of the demo, in order to
+  use CorsixTH. After most of the original engine has been re-implemented
+  in open source code, the project will serve as a base from which
+  extensions and improvements to the original game can be made.
+  We use graphics, sound and other data from the original game so one 
+  of the following is required
+    Original game CD from eBay etc. or your dusty bookshelf
+    A download from GOG.com or Origin
+  https://github.com/CorsixTH/CorsixTH/wiki/Getting-Started
+
+grade: stable
+confinement: strict
+
+apps:
+  corsixth:
+    command: desktop-launch $SNAP/CorsixTH/CorsixTH
+    environment:
+      LUA_CPATH: '$SNAP/usr/lib/x86_64-linux-gnu/lua/5.2/?.so;;'
+      TIMIDITY_CFG: $SNAP/timidity.cfg
+    plugs:
+    - network
+    - network-bind
+    - unity7
+    - opengl
+    - home
+    - pulseaudio
+    - joystick
+
+parts:
+  timidityconfig:
+    plugin: dump
+    source: snap/config
+  corsixth:
+    after: [desktop-gtk2]
+    plugin: cmake
+    source: https://github.com/CorsixTH/CorsixTH.git
+    source-tag: 'v0.61'
+    build-packages:
+      - build-essential
+      - cmake
+      - liblua5.2-0
+      - liblua5.2-dev
+      - libsdl2-dev
+      - libsdl2-mixer-dev
+      - timidity
+      - libfreetype6-dev
+      - lua-filesystem-dev
+      - lua-lpeg
+      - doxygen
+      - libavcodec-dev
+      - libavformat-dev 
+      - libavresample-dev 
+      - libavutil-dev
+      - libavdevice-dev 
+      - libswscale-dev
+      - libpostproc-dev
+      - libswresample-dev
+      - libavfilter-dev
+    stage-packages:
+      - lua-filesystem
+      - lua-lpeg
+      - freepats

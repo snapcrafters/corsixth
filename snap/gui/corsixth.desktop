@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=CorsixTH
+Exec=corsixth
+Comment=A Theme Hospital Clone
+Comment[de]=Ein Klon von Theme Hospital
+Icon=${SNAP}/meta/gui/corsixth.png
+Type=Application
+Terminal=false
+StartupNotify=false
+Categories=Game;Simulation;
+Keywords=hospital;simulation;bullfrog;
