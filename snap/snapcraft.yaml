@@ -1,5 +1,6 @@
 name: corsixth
-version: v0.61
+version: "latest"
+version-script: git -C parts/corsixth/build describe --dirty | sed "s/v//g"
 summary: Open source clone of Theme Hospital
 description: 
   CorsixTH aims to re-implement the game engine of Theme Hospital, and be 
@@ -40,7 +41,15 @@ parts:
     after: [desktop-gtk2]
     plugin: cmake
     source: https://github.com/CorsixTH/CorsixTH.git
-    source-tag: 'v0.61'
+    prepare: |
+      last_committed_tag="$(git describe --tags --abbrev=0)"
+      last_released_tag="$(snap info corsixth | awk '$1 == "beta:" { print $2 }')"
+      # If the latest tag from the upstream project has not been released to
+      # beta, build that tag instead of master.
+      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
+        git fetch
+        git checkout "${last_committed_tag}"
+      fi
     build-packages:
       - build-essential
       - cmake
