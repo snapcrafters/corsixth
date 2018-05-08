@@ -74,6 +74,7 @@ parts:
       - libswresample-dev
       - libavfilter-dev
     stage-packages:
+      - libgl1-mesa-glx
       - lua-filesystem
       - lua-lpeg
       - freepats
