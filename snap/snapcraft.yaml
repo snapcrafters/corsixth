@@ -1,6 +1,6 @@
 name: corsixth
 version: "latest"
-version-script: git -C parts/corsixth/build describe --tags | sed "s/v//g"
+version-script: git -C parts/corsixth/src describe --tags | sed "s/v//g"
 summary: Open source clone of Theme Hospital
 description: 
   CorsixTH aims to re-implement the game engine of Theme Hospital, and be 
