@@ -20,7 +20,7 @@ confinement: strict
 
 apps:
   corsixth:
-    command: desktop-launch $SNAP/CorsixTH/CorsixTH
+    command: desktop-launch $SNAP/bin/corsix-th
     environment:
       LUA_CPATH: '$SNAP/usr/lib/x86_64-linux-gnu/lua/5.2/?.so;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
