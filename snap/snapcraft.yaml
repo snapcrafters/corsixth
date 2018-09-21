@@ -1,6 +1,4 @@
 name: corsixth
-version: "latest"
-version-script: git -C parts/corsixth/src describe --tags | sed "s/v//g"
 summary: Open source clone of Theme Hospital
 description: 
   CorsixTH aims to re-implement the game engine of Theme Hospital, and be 
@@ -14,13 +12,14 @@ description:
     Original game CD from eBay etc. or your dusty bookshelf
     A download from GOG.com or Origin
   https://github.com/CorsixTH/CorsixTH/wiki/Getting-Started
+adopt-info: corsixth
 
 grade: stable
 confinement: strict
 
 apps:
   corsixth:
-    command: desktop-launch $SNAP/CorsixTH/CorsixTH
+    command: desktop-launch $SNAP/bin/corsix-th
     environment:
       LUA_CPATH: '$SNAP/usr/lib/x86_64-linux-gnu/lua/5.2/?.so;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
@@ -41,7 +40,8 @@ parts:
     after: [desktop-gtk2]
     plugin: cmake
     source: https://github.com/CorsixTH/CorsixTH.git
-    prepare: |
+    override-pull: |
+      snapcraftctl pull
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info corsixth | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
@@ -52,6 +52,7 @@ parts:
         cd ../src
         git checkout "${last_committed_tag}"
       fi
+      snapcraftctl set-version "$(git describe --tags)"
     build-packages:
       - build-essential
       - cmake
