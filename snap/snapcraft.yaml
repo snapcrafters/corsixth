@@ -22,6 +22,7 @@ apps:
     command: desktop-launch $SNAP/bin/corsix-th
     environment:
       LUA_CPATH: '$SNAP/usr/lib/x86_64-linux-gnu/lua/5.2/?.so;;'
+      LUA_PATH: '$SNAP/share/corsix-th/;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
     plugs:
     - network
