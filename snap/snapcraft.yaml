@@ -13,16 +13,18 @@ description:
     A download from GOG.com or Origin
   https://github.com/CorsixTH/CorsixTH/wiki/Getting-Started
 adopt-info: corsixth
+base: core18
 
 grade: stable
 confinement: strict
 
 apps:
   corsixth:
-    command: desktop-launch $SNAP/bin/corsix-th
+    command: desktop-launch $SNAP/bin/corsix-th $SNAP/share/corsix-th/CorsixTH.lua
     environment:
-      LUA_CPATH: '$SNAP/usr/lib/x86_64-linux-gnu/lua/5.2/?.so;;'
-      LUA_PATH: '$SNAP/share/corsix-th/;;'
+      LD_LIBRARY_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/:$LD_LIBRARY_PATH'
+      LUA_CPATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/?.so;;'
+      LUA_PATH: '$SNAP/share/corsix-th/Lua/?.lua;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
     plugs:
     - network
@@ -42,6 +44,7 @@ parts:
     plugin: cmake
     source: https://github.com/CorsixTH/CorsixTH.git
     override-pull: |
+      set -x 
       snapcraftctl pull
       last_committed_tag="$(git describe --tags --abbrev=0)"
       last_released_tag="$(snap info corsixth | awk '$1 == "beta:" { print $2 }')"
@@ -53,12 +56,13 @@ parts:
         cd ../src
         git checkout "${last_committed_tag}"
       fi
+      sed -i 's|${CMAKE_INSTALL_FULL_DATADIR}/corsix-th/CorsixTH.lua|/snap/corsixth/current/share/corsix-th/CorsixTH.lua|g' CorsixTH/CMakeLists.txt
       snapcraftctl set-version "$(git describe --tags)"
     build-packages:
       - build-essential
       - cmake
-      - liblua5.2-0
-      - liblua5.2-dev
+      - liblua5.3-0
+      - liblua5.3-dev
       - libsdl2-dev
       - libsdl2-mixer-dev
       - timidity
@@ -80,3 +84,97 @@ parts:
       - lua-filesystem
       - lua-lpeg
       - freepats
+      - libsdl2-2.0-0
+      - libsdl2-mixer-2.0-0
+      - libfluidsynth1
+      - libjack0
+      - liblua5.3-0
+      - libmad0
+      - libmodplug1
+      - libpulse0
+      - libasound2
+      - libasyncns0   
+      - libavcodec57
+      - libavformat57
+      - libavutil55
+      - libhogweed4
+      - libpixman-1-0
+      - libsndfile1
+      - libsndio6.1
+      - libsoxr0
+      - libspeex1
+      - libssh-gcrypt-4
+      - libstdc++6
+      - libswresample2
+      - libswscale4
+      - libsystemd0
+      - libtasn1-6
+      - libthai0
+      - libtheora0
+      - libtwolame0
+      - libunistring2
+      - libuuid1
+      - libva2
+      - libva-drm2
+      - libva-x11-2
+      - libvdpau1
+      - libvorbis0a
+      - libvorbisenc2
+      - libvorbisfile3
+      - libvpx5
+      - libwavpack1
+      - libwayland-client0
+      - libwayland-cursor0
+      - libwayland-egl1
+      - libwebp6
+      - libwebpmux3
+      - libwrap0
+      - libx11-6
+      - libx264-152
+      - libx265-146
+      - libxau6
+      - libxcb1
+      - libxcb-render0
+      - libxcb-shm0
+      - libxcursor1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+      - libxi6
+      - libxinerama1
+      - libxkbcommon0
+      - libxml2
+      - libxrandr2
+      - libxrender1
+      - libxss1
+      - libxvidcore4
+      - libxxf86vm1
+      - libzvbi0
+      - zlib1g
+  desktop-gtk2:
+    build-packages:
+      - build-essential
+      - libgtk2.0-dev
+    make-parameters:
+      - FLAVOR=gtk2
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libgtk2.0-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk2.0-bin
+      - unity-gtk2-module
+      - locales-all
+      - libappindicator1
+      - xdg-user-dirs
+      - ibus-gtk
+      - libibus-1.0-5
