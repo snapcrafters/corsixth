@@ -58,9 +58,12 @@ parts:
       fi
       sed -i 's|${CMAKE_INSTALL_FULL_DATADIR}/corsix-th/CorsixTH.lua|/snap/corsixth/current/share/corsix-th/CorsixTH.lua|g' CorsixTH/CMakeLists.txt
       snapcraftctl set-version "$(git describe --tags)"
+    build-snaps:
+      - cmake/latest/stable
+    build-environment:
+      - PATH: /snap/bin:$PATH
     build-packages:
       - build-essential
-      - cmake
       - liblua5.3-0
       - liblua5.3-dev
       - libsdl2-dev
