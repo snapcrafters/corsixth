@@ -46,7 +46,7 @@ parts:
     override-pull: |
       set -x 
       snapcraftctl pull
-      last_committed_tag="$(git describe --tags --abbrev=0)"
+      last_committed_tag="$(git describe --tags --abbrev=0 | tr -d 'v')"
       last_released_tag="$(snap info corsixth | awk '$1 == "beta:" { print $2 }')"
       # If the latest tag from the upstream project has not been released to
       # beta, build that tag instead of master.
@@ -57,7 +57,7 @@ parts:
         git checkout "${last_committed_tag}"
       fi
       sed -i 's|${CMAKE_INSTALL_FULL_DATADIR}/corsix-th/CorsixTH.lua|/snap/corsixth/current/share/corsix-th/CorsixTH.lua|g' CorsixTH/CMakeLists.txt
-      snapcraftctl set-version "$(git describe --tags)"
+      snapcraftctl set-version "$(git describe --tags | tr -d 'v')"
     build-snaps:
       - cmake/latest/stable
     build-environment:
