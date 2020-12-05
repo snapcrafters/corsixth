@@ -22,7 +22,7 @@ apps:
   corsixth:
     command: desktop-launch $SNAP/bin/corsix-th $SNAP/share/corsix-th/CorsixTH.lua
     environment:
-      LD_LIBRARY_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/:$LD_LIBRARY_PATH'
+      LD_LIBRARY_PATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/'
       LUA_CPATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/?.so;;'
       LUA_PATH: '$SNAP/share/corsix-th/Lua/?.lua;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
