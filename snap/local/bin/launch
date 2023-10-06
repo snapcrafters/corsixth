@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec $SNAP/usr/local/bin/corsix-th --interpreter=$SNAP/usr/local/share/corsix-th/CorsixTH.lua
