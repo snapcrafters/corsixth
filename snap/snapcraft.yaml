@@ -1,103 +1,94 @@
 name: corsixth
 summary: Open source clone of Theme Hospital
-description: 
-  CorsixTH aims to re-implement the game engine of Theme Hospital, and be 
+description:
+  CorsixTH aims to re-implement the game engine of Theme Hospital, and be
   able to load the original game data files. This means that you will need
   a purchased copy of Theme Hospital, or a copy of the demo, in order to
   use CorsixTH. After most of the original engine has been re-implemented
   in open source code, the project will serve as a base from which
   extensions and improvements to the original game can be made.
-  We use graphics, sound and other data from the original game so one 
+  We use graphics, sound and other data from the original game so one
   of the following is required
     Original game CD from eBay etc. or your dusty bookshelf
     A download from GOG.com or Origin
   https://github.com/CorsixTH/CorsixTH/wiki/Getting-Started
 adopt-info: corsixth
-base: core22
+base: core24
 
 grade: stable
 confinement: strict
 
 apps:
   corsixth:
-    extensions: [ gnome ]
+    extensions: [gnome]
     command: bin/launch
     environment:
       LUA_CPATH: '$SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/lua/5.3/?.so;;'
-      LUA_PATH: '$SNAP/share/corsix-th/Lua/?.lua;;'
+      LUA_PATH: '$SNAP/usr/share/corsix-th/Lua/?.lua;;'
       TIMIDITY_CFG: $SNAP/timidity.cfg
     plugs:
-    - network
-    - network-bind
-    - unity7
-    - opengl
-    - home
-    - pulseaudio
-    - joystick
+      - network
+      - network-bind
+      - unity7
+      - opengl
+      - home
+      - pulseaudio
+      - joystick
 
 parts:
   timidityconfig:
     plugin: dump
     source: snap/local
+
   corsixth:
     plugin: cmake
     source: https://github.com/CorsixTH/CorsixTH.git
+    source-tag: v0.69.2
+    source-depth: 1
     override-pull: |
-      set -x 
-      snapcraftctl pull
-      last_committed_tag="$(git describe --tags --abbrev=0)"
-      last_released_tag=v"$(snap info corsixth | awk '$1 == "beta:" { print $2 }')"
-      # If the latest tag from the upstream project has not been released to
-      # beta, build that tag instead of master.
-      if [ "${last_committed_tag}" != "${last_released_tag}" ]; then
-        git fetch
-        git checkout "${last_committed_tag}"
-        cd ../src
-        git checkout "${last_committed_tag}"
-      fi
-      sed -i 's|${CMAKE_INSTALL_FULL_DATADIR}/corsix-th/CorsixTH.lua|/snap/corsixth/current/share/corsix-th/CorsixTH.lua|g' CorsixTH/CMakeLists.txt
-      snapcraftctl set-version "$(git describe --tags | tr -d 'v')"
-    build-snaps:
-      - cmake/latest/stable
-    build-environment:
-      - PATH: /snap/bin:$PATH
+      craftctl default
+      craftctl set version="$(git describe --tags --always | tr -d 'v')"
     build-packages:
       - build-essential
-      - liblua5.3-0
-      - liblua5.3-dev
-      - libsdl2-dev
-      - libsdl2-mixer-dev
-      - timidity
-      - libfreetype6-dev
-      - lua-filesystem-dev
-      - lua-lpeg
+      - cmake
       - doxygen
       - libavcodec-dev
-      - libavformat-dev 
-      - libavutil-dev
-      - libavdevice-dev 
-      - libswscale-dev
-      - libpostproc-dev
-      - libswresample-dev
+      - libavdevice-dev
       - libavfilter-dev
+      - libavformat-dev
+      - libavutil-dev
+      - libcurl4-openssl-dev
+      - libfreetype6-dev
+      - liblua5.3-0
+      - liblua5.3-dev
+      - libpostproc-dev
+      - libsdl2-dev
+      - libsdl2-mixer-dev
+      - libswresample-dev
+      - libswscale-dev
+      - lua-filesystem-dev
+      - lua-lpeg
+      - pkg-config
+      - timidity
     stage-packages:
-      - libsodium23
-      - libopusfile0
       - libaom3
+      - libavformat60
       - libbluray2
       - libchromaprint1
-      - libdav1d5
+      - libcurl4t64
+      - libdav1d7
       - libdecor-0-0
+      - libfluidsynth3
       - libgme0
       - libgsm1
-      - libmfx1
-      - libsdl2-2.0-0
-      - libsdl2-mixer-2.0-0
-      - libfluidsynth3
       - liblua5.3-0
       - libmodplug1
-      - libavformat58
-      - libswscale5
+      - libmfx1
+      - libopusfile0
+      - libsdl2-2.0-0
+      - libsdl2-mixer-2.0-0
+      - libsodium23
+      - libswscale7
       - libxss1
       - lua-filesystem
       - lua-lpeg
