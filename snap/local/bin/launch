@@ -2,4 +2,14 @@
 
 set -eu
 
+lua_triplet_dir="$(find "$SNAP/usr/lib" -mindepth 1 -maxdepth 1 -type d -name '*-linux-gnu' | head -n 1)"
+
+if [ -n "${lua_triplet_dir}" ]; then
+  export LUA_CPATH="${lua_triplet_dir}/lua/5.3/?.so;$SNAP/usr/lib/lua/5.3/?.so;;"
+else
+  export LUA_CPATH="$SNAP/usr/lib/lua/5.3/?.so;;"
+fi
+
+export LUA_PATH="$SNAP/usr/local/share/corsix-th/Lua/?.lua;$SNAP/usr/share/lua/5.3/?.lua;;"
+
 exec "$SNAP/usr/local/bin/corsix-th" --interpreter="$SNAP/usr/local/share/corsix-th/CorsixTH.lua" "$@"
