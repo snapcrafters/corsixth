@@ -2,4 +2,4 @@
 
 set -eu
 
-exec "$SNAP/usr/bin/corsix-th" --interpreter="$SNAP/usr/share/corsix-th/CorsixTH.lua" "$@"
+exec "$SNAP/usr/local/bin/corsix-th" --interpreter="$SNAP/usr/local/share/corsix-th/CorsixTH.lua" "$@"
